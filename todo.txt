@@ -1,0 +1,51 @@
+git access token
+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
+
+TODO List
+
+DONE - install and setup django
+    Dependancies
+    - DRF
+    - Pillow
+    - Cors-headers
+    - djoser
+    - stripe
+
+DONE - install and setup vue
+    Dependancies
+    - babel
+    - router
+    - vuex
+    - css pre-processors
+    - axios
+    - bulma
+    
+DONE - include font awesome
+Done - set up base template
+DONE - create django app and models for pictures
+DONE - create serializer and views for products
+?vue not rendering images? - create simple home page with latest products
+?vue not rendering images? - view a product
+    - create viewset in django
+    - create vue page for showing product
+    - add link to detail page
+DONE - set opp vuex / state
+- make it possible to add to cart
+    - add functionality to vuex
+    - initialize store in app.vue
+    - add button to product page
+    - show a toast message
+- implement a loading bar
+- set document title on all pages
+- make it possible to view a category
+    - convert the product to a component
+- add search functionality
+- view cart
+    - a cart item should be a component
+- change contents of cart
+    - increment/decrement content
+    -remove from cart
+- make it possible to sign up
+- make it possible to login
+- create a simple "my account" page
+- proceed to checkout (authentication)

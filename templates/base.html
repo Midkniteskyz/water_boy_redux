@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>title</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x"></script>
+    <script src="https://unpkg.com/axios@0.21.1/dist/axios.min.js"></script>
+
+</head>
+    <body>
+        <noscript>
+            <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript
+                enabled. Please enable it to continue.</strong>
+        </noscript>
+
+        <div id="app">
+
+            <!-- Wrapper for all content -->
+            <div id="wrapper">
+
+                <!-- Bulma class. Gives menu at the top with a dark theme. -->
+                <nav class="navbar is-dark">
+
+                    <!-- Logo -->
+                    <div class="navbar-brand">
+
+                        <!-- Logo link to the homepage -->
+                        <a href="home/" class="navbar-item"><strong>Water Boy</strong></a>
+
+                        <!-- Hamburger style menu for small devices. Navbar-Menu shows when this icon is clicked. -->
+                        <a class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu"
+                            @click="showMobileMenu = !showMobileMenu">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                        </a>
+                    </div>
+
+                    <!-- Connects to menu in line 14. V-Bind is active is showMobileMenu is True-->
+                    <div class="navbar-menu" id="navbar-menu" v-bind:class="{'is-active': showMobileMenu}">
+                        <div class="navbar-start">
+                            <div class="navbar-item">
+                                <form method="get" action="/search">
+                                    <div class="field has-addons">
+                                        <div class="control">
+                                            <input type="text" class="input" placeholder="Thirsty? Search Here..."
+                                                name="query">
+                                        </div>
+
+                                        <div class="control">
+                                            <button class="button is-success">
+                                                <span class="icon">
+                                                    <i class="fas fa-search"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Seperate the menu on one side of the page with logo on the otherside -->
+                        <div class="navbar-end">
+
+                            <!-- Categories of water -->
+                            <a href="/domestic" class="navbar-item">Domestic</a>
+                            <a href="/import" class="navbar-item">Import</a>
+
+                            <!-- Shopping Cart & Log in buttons -->
+                            <div class="navbar-item">
+                                <div class="buttons">
+                                    <a href="/log-in" class="button is-light">Log In</a>
+
+                                    <a href="/cart" class="button is-success">
+                                        <span class="icon"><i class="fas fa-shopping-cart"></i></span>
+                                        <span>Cart ({{ cartTotalLength }})</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Loading bar -->
+                <!-- if the store state is truly loading, then the class that is bound with vue will run. -->
+                <div class="is-loading-bar has-text-centered" v-bind:class="{'is-loading': $store.state.isLoading}">
+                    <div class="lds-dual-ring"></div>
+                </div>
+
+                <!-- Create space between the menu top and the main content with a section. Router view is where all of the content is placed-->
+                <section class="section">
+                    {% block content %}
+                    {% endblock %}
+                </section>
+
+                <!-- Boilerplate footer -->
+                <footer class="footer">
+                    <p class="has-text-centered">Copyright (c) 2021</p>
+                </footer>
+
+            </div>
+        </div>
+
+        <script>
+            export default {
+                data() {
+                    return {
+                        showMobileMenu: false,
+                        cart: {
+                            items: []
+                        }
+                    }
+                },
+                // lifecycle hook that starts before the page is created. 
+                beforeCreate() {
+                    // commit is used to call the mutations
+                    this.$store.commit("initializeStore")
+                },
+                mounted() {
+                    this.cart = this.$store.state.cart
+                },
+                // calculated variables based on things around the whole page
+                computed: {
+                    cartTotalLength() {
+                        let totalLength = 0
+
+                        for (let i = 0; i < this.cart.items.length; i++) {
+                            totalLength += this.cart.items[i].quantity
+                        }
+
+                        return totalLength
+                    }
+                }
+            }
+        </script>
+
+    </body>
+</html>
